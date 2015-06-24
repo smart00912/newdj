@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+        <script type="text/javascript" src="{% static "js/jquery-1.11.3.min.js" %}"></script>
+</head>
+<body>
+            <script>
+          $(function(){
+              $.getJSON('/region/',{val:'city'},function(result){
+                   console.log(result);
+                  $.each(result.beijing.haidian,function(key,item){
+                      console.log(item);
+                      var row = "<li>" +key+"------"+item+"</li>";
+                      $("#ul").append(row);
+                  })
+              }); 
+          });
+  </script>
+<ul id="ul"></ul>
+</body>
+</html>

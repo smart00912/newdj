@@ -1,0 +1,30 @@
+{% extends 'master/master.html' %}
+
+{% block content %}
+ 
+{% include 'incloud/page.html' %} 
+    
+<label>bookname: </label> {{ bookname }}<br>
+<label>price: </label> {{ price }}
+
+{% ifequal price 18 %}
+    <p>price is 18!</p>
+{% endifequal %}
+
+{% if pid > 3 %}
+    <H1>so many books!</H1>
+{% else %}
+    <H1>few books!</H1>
+{% endif %}
+ {# this is a comment #}
+{% if sean %}
+{{ sean }}
+{% endif %}
+<hr>
+<ul>
+{% for book in res %}
+    <li>{{ book.book_name }}</li>
+{% endfor %}
+</ul>
+    
+{% endblock %}
