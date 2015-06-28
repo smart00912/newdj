@@ -2,14 +2,10 @@
 
 from django.shortcuts import render,redirect,render_to_response
 from django.template import RequestContext
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
 from fms.AccountForm import LoginForm
-
-
-
-
-
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -29,6 +25,8 @@ def Login(req):
 				return redirect('/newapp3/userinfo/')
 			data['loginstatus'] = 'username or password is incorrect'
 	return render_to_response('newapp3/login.html',data,context_instance=RequestContext(req))
+
+
 
 def LoginF(req):
 	if req.method == 'GET':
@@ -50,14 +48,28 @@ def LoginF(req):
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password']
 			user = authenticate(username=username,password=password)
-		#	是否允许用户登录, 设置为``False``，可以不用删除用户来禁止 用户登录
-			if user is not None and user.is_active:
-				
-				return HttpResponse('OK')
+		#	是否允许用户登录, 设置为``False``，可以不用删除用户来禁止 用户登录 (在后台admin页面里用户权限设置里)
+			if user is not None and user.is_active: 
+				# login的作用是在系统中把用户标记为已经登录用来生成session等
+				login(req,user)
+				return HttpResponse("<a href='/newapp3/logout/'>logout</a>")	
 			else:
-				return render_to_response('newapp3/loginform.html',context_instance=RequestContext(req,{'model':form}))
+				# return redirect('/newapp3/loginform/',{'loginstatus':'false'})
+				return render_to_response('newapp3/loginform.html',context_instance=RequestContext(req,{'model':form,'loginstatus':'password or username incorrect!'}))
 		else:
 			return render_to_response('newapp3/loginform.html',context_instance=RequestContext(req,{'model':form},))
 
 def Details(req):
 	return  HttpResponse('ok')
+
+# 使用django内置的装饰器来验证用户是否登录，如果未登录那么跳转到相应的登录页面,需要在url里添加路由项
+# 装饰器的参数也可以加在url里
+@login_required(login_url='/newapp3/accounts/login/',redirect_field_name='goto')
+def Index(req):
+	return render_to_response('newapp3/userinfo.html',{'user':req.user})
+
+
+def Logout(req):
+	user= req.user
+	logout(req)
+	return HttpResponse('%s are logged out!' % user.username)
