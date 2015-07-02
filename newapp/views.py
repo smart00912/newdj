@@ -1,5 +1,7 @@
+#coding: utf8
 from django.shortcuts import render,render_to_response
 import json
+import datetime
 
 # Create your views here.
 from django.http import HttpResponse
@@ -38,5 +40,12 @@ def List(req,num_id):
 	else:
 		num_id=0
 	return HttpResponse('<H1>'+family[num_id]+'</H1>')
+
+# 参数offset接受url中括号里传过来的值，此处offset名称任意
+def hours_ahead(request, offset):
+	offset = int(offset)
+	dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
+	html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
+	return HttpResponse(html)
 
 

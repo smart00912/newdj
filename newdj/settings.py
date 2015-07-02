@@ -41,6 +41,8 @@ INSTALLED_APPS = (
 	'newapp',
     'newapp2',
     'newapp3',
+    'djcelery',
+    'celery_test',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,3 +125,13 @@ STATICFILES_DIRS = (
 )
 
 MEDIA_URL='/media/' 
+
+# set up celery config
+import djcelery
+djcelery.setup_loader()
+
+BROKER_HOST = 'localhost'
+BROKER_PORT = 5672
+BROKER_USER = 'guest'
+BROKER_PASSWORD = 'guest'
+BROKER_VHOST = '/'

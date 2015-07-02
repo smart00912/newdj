@@ -74,6 +74,29 @@
       <index name="user_id" unique="true" columns="permission_id"/>
       <index name="auth_user_user_perm_permission_id_3d7071f0_fk_auth_permission_id" unique="false" columns="permission_id"/>
     </table>
+    <table name="celery_taskmeta" schema="" catalog="newdj" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="task_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="result" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="date_done" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="traceback" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="meta" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="task_id" unique="true" columns="task_id"/>
+      <index name="celery_taskmeta_662f707d" unique="false" columns="hidden"/>
+    </table>
+    <table name="celery_tasksetmeta" schema="" catalog="newdj" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="taskset_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="result" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="date_done" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="taskset_id" unique="true" columns="taskset_id"/>
+      <index name="celery_tasksetmeta_662f707d" unique="false" columns="hidden"/>
+    </table>
     <table name="django_admin_log" schema="" catalog="newdj" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="action_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
@@ -111,6 +134,86 @@
       <column name="expire_date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="session_key"/>
       <index name="django_session_de54fa62" unique="false" columns="expire_date"/>
+    </table>
+    <table name="djcelery_crontabschedule" schema="" catalog="newdj" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="minute" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="hour" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="day_of_week" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="day_of_month" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="month_of_year" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="djcelery_peri_crontab_id_4bb497f6_fk_djcelery_crontabschedule_id" table="djcelery_periodictask" schema="" catalog="newdj" columns="crontab_id"/>
+    </table>
+    <table name="djcelery_intervalschedule" schema="" catalog="newdj" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="every" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="period" sqlType="VARCHAR" precision="24" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="djcelery_pe_interval_id_2f9f2053_fk_djcelery_intervalschedule_id" table="djcelery_periodictask" schema="" catalog="newdj" columns="interval_id"/>
+    </table>
+    <table name="djcelery_periodictask" schema="" catalog="newdj" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="task" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="interval_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="crontab_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="args" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="kwargs" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="queue" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="exchange" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="routing_key" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="expires" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="enabled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="last_run_at" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="total_run_count" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="date_changed" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="djcelery_pe_interval_id_2f9f2053_fk_djcelery_intervalschedule_id" columns="interval_id" ref-table="djcelery_intervalschedule" ref-schema="" ref-catalog="newdj" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="djcelery_peri_crontab_id_4bb497f6_fk_djcelery_crontabschedule_id" columns="crontab_id" ref-table="djcelery_crontabschedule" ref-schema="" ref-catalog="newdj" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="name" unique="true" columns="name"/>
+      <index name="djcelery_pe_interval_id_2f9f2053_fk_djcelery_intervalschedule_id" unique="false" columns="interval_id"/>
+      <index name="djcelery_peri_crontab_id_4bb497f6_fk_djcelery_crontabschedule_id" unique="false" columns="crontab_id"/>
+    </table>
+    <table name="djcelery_periodictasks" schema="" catalog="newdj" type="TABLE">
+      <column name="ident" sqlType="SMALLINT" precision="5" scale="0" nullable="false" jdbcType="5"/>
+      <column name="last_update" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="ident"/>
+    </table>
+    <table name="djcelery_taskstate" schema="" catalog="newdj" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="state" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="task_id" sqlType="VARCHAR" precision="36" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="tstamp" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="args" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="kwargs" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="eta" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="expires" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="result" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="traceback" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="runtime" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="retries" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="worker_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="djcelery_taskstate_worker_id_4e3c2c27_fk_djcelery_workerstate_id" columns="worker_id" ref-table="djcelery_workerstate" ref-schema="" ref-catalog="newdj" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="task_id" unique="true" columns="task_id"/>
+      <index name="djcelery_taskstate_662f707d" unique="false" columns="hidden"/>
+      <index name="djcelery_taskstate_863bb2ee" unique="false" columns="tstamp"/>
+      <index name="djcelery_taskstate_9ed39e2e" unique="false" columns="state"/>
+      <index name="djcelery_taskstate_b068931c" unique="false" columns="name"/>
+      <index name="djcelery_taskstate_worker_id_4e3c2c27_fk_djcelery_workerstate_id" unique="false" columns="worker_id"/>
+    </table>
+    <table name="djcelery_workerstate" schema="" catalog="newdj" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="hostname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_heartbeat" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="djcelery_taskstate_worker_id_4e3c2c27_fk_djcelery_workerstate_id" table="djcelery_taskstate" schema="" catalog="newdj" columns="worker_id"/>
+      <index name="hostname" unique="true" columns="hostname"/>
+      <index name="djcelery_workerstate_f129901a" unique="false" columns="last_heartbeat"/>
     </table>
     <table name="newapp2_authers" schema="" catalog="newdj" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -161,7 +264,7 @@
     <table name="newapp3_auth" schema="" catalog="newdj" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="uname" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
-      <column name="pwd" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="pwd" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
       <column name="islogin" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>

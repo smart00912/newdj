@@ -5,6 +5,10 @@
     <title></title>
 </head>
 <body>
-here's userinfo page
+{% if user %}
+Welcome [{{ user }}]:  you are logged in already!
+{% else %}
+you need to login first!
+{% endif %}
 </body>
 </html>
