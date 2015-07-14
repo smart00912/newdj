@@ -14,7 +14,7 @@ de = wrapper(foo)
 de()
 '''
 
-
+# exp1
 def wrapper(func):
 	def result():
 		print 'before'
@@ -28,5 +28,7 @@ def foo():
 	
 foo()
 
+
+#exp2
 
 		
