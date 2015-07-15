@@ -54,6 +54,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    # custom middleware
+    'newapp3.middleware.mw.MiddleW',
+	'newapp3.middleware.mw.MiddleW2',
 )
 
 ROOT_URLCONF = 'newdj.urls'

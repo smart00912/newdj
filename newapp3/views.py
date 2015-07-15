@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
 from fms.AccountForm import LoginForm
 from django.contrib.auth.decorators import login_required
+from filter.FilterDecorator import Filter
 
 
 # Create your views here.
@@ -73,3 +74,14 @@ def Logout(req):
 	user= req.user
 	logout(req)
 	return HttpResponse('%s are logged out!' % user.username)
+
+
+def before_func(request):
+	return HttpResponse('<H1>before</H1>')
+
+def after_func(request):
+	return HttpResponse('<H1>after</H1>')
+
+@Filter(before_func,after_func)
+def Decorator_test(request):
+	return HttpResponse('<H1>FUNC</H1>')
