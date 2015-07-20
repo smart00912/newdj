@@ -69,6 +69,13 @@ func()
 
 
 
+#exec 把字符串当成表达式执行
+exec "import os"
+
+
+#compile
+
+
 
 
 

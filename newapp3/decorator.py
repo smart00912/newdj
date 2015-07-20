@@ -15,6 +15,7 @@ def After(arg1,arg2):
 
 def Fileter(before_func,after_func):
 	def outer(main_func):
+		# wraper里的两个采纳数相当于被装饰函数里的两个参数（arg1，arg2）
 		def wrapper(request,kargs):
 			before_result = before_func(request,kargs)
 			if(before_result != None):
@@ -33,7 +34,7 @@ def Fileter(before_func,after_func):
 
 # 如果装饰器中的before先返回非none结果，那么将不会继续执行（main和after都不会执行）
 @Fileter(Before,After)
-# List函数相当于装饰器里的main_func
+# Execute函数相当于装饰器里的main_func
 def Execute(arg1,arg2):
 	return 1+2
 #  return None 会得到不同的结果
