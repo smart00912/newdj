@@ -50,9 +50,11 @@ class Children(Father):
 		super(Children, self).__init__()
 result = Children()
 
-# show all father class for a children class
+# 像是一个类的向上一级父类（多级继承只显示最近的上一级）
 print  Children.__base__
 print issubclass(Children,Father)
+
+# 语法糖 call()
 
 
 
