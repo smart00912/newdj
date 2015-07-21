@@ -20,3 +20,39 @@ f.fun2()
 # 动态添加的属性是静态的
 Foo.age=19
 print Foo.age
+
+# 新式类中限制自定义动态字段（__slots__）
+
+class Foo(object):
+	__slots__=('name','age')
+# 限制实例只能添加指定的动态属性，否则将报错
+
+#新式类和经典类关于执行父类构造函数的区别
+'''经典类
+Father.__init__(self) 
+'''
+'''新式类
+super(children,self).__init__()
+'''
+'''
+python和其他语言的区别，当执行子类构造函数时不会调用父类的构造函数！！
+这样，当调用子类时如果需要初始化父类那么需要显式的调用父类的构造函数
+'''
+class Father(object):
+	def __init__(self):
+		print 'here is fathers class'
+
+
+class Children(Father):
+	def __init__(self):
+		print 'here is childrens class'
+		# call father class
+		super(Children, self).__init__()
+result = Children()
+
+# show all father class for a children class
+print  Children.__base__
+print issubclass(Children,Father)
+
+
+
